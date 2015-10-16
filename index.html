@@ -6,50 +6,65 @@
 </head>
 
 <body>
-  <h1>Flash XSS using images</h1>
-  <p>
-    Because it has been a long time since my last post, I decided to write about something that I noticed a few weeks ago and I didn't know.
-  </p>
+  <section>
+    <article>
+      <h1>Flash XSS using images</h1>
+      <p>
+        Because it has been a long time since my last post, I decided to write about something that I noticed a few weeks ago and I didn't know.
+      </p>
 
-  <p>
-    Sometimes you may notice that a Flash file displays images from an URL that you can modify or displays HTML content that you can modify. This feature will allow you to load an external Flash file and execute Javascript code.
-  </p>
+      <p>
+        Sometimes you may notice that a Flash file displays images from an URL that you can manipulate or displays HTML content that you can manipulate. This feature will allow you to load an external Flash file and execute Javascript code.
+      </p>
 
-  <p>
-    The requirements for this to work:
-    <ol>
-      <li>
-        The Flash file must be loaded using <code>&lt;embed&gt;</code> or <code>&lt;object&gt;</code>, you can't execute Javascript code if the file is loaded directly from the browser.
-      </li>
-      <li>
-        The attribute allowscriptaccess must be set to always.
-      </li>
-    </ol>
-  </p>
+      <p>
+        The requirements for this to work:
+        <ol>
+          <li>
+            The Flash file must be loaded using <code>&lt;embed&gt;</code> or <code>&lt;object&gt;</code>, you can't execute Javascript code if the file is loaded directly from the browser.
+          </li>
+          <li>
+            The attribute <code>allowscriptaccess</code> must be set to <code>always</code> when using <code>&lt;embed&gt;</code> or the <code>&lt;param  name="allowscriptaccess"&gt;</code> must be set to <code>always</code> when using <code>&lt;object&gt;</code>.
+          </li>
+        </ol>
+      </p>
 
-  <p>
-    IMG tag example (it's based on the example given in the ActionScript 3.0 developer's guide):
-  </p>
+      <p>
+        <code>&lt;img&gt;</code> example (it's based on <a href="http://help.adobe.com/en_US/as3/dev/WS8d7bb3e8da6fb92f-20050207122bd5f80cb-8000.html#WS8d7bb3e8da6fb92f-20050207122bd5f80cb-7ffc" target="_blank">the example given in the ActionScript 3.0 developer's guide</a>):
+      </p>
 
-  <pre>
-  package
-  {
-      import flash.display.Sprite;
-      import flash.text.*;
-
-      public class TextWithImage extends Sprite
+      <pre>
+      // TextWithImage.AS
+      package
       {
-          private var myTextBox:TextField = new TextField();
-          private var myText:String = 'Example &lt;img src="//u00f1.xyz/xss.swf"&gt;'; // I don't know why, but some text is necessary. That's why I put "Example"
+          import flash.display.Sprite;
+          import flash.text.*;
 
-          public function TextWithImage()
+          public class TextWithImage extends Sprite
           {
-              myTextBox.htmlText = myText;
-              addChild(myTextBox);
+              private var myTextBox:TextField = new TextField();
+              private var myText:String = 'Example &lt;img src="TextWithImage.swf"&gt;'; // I don't know why, but some text is necessary, that's why I put "Example"
+
+              public function TextWithImage()
+              {
+                  myTextBox.htmlText = myText;
+                  addChild(myTextBox);
+              }
           }
       }
-  }
-  </pre>
+      </pre>
+
+      <pre>
+      // TextWithImage.HTML
+      &lt;embed src="TextWithImage.swf" allowscriptaccess="always"&gt;&lt;/embed&gt;
+      </pre>
+
+      <p>
+        URL example
+      </p>
+
+    </article>
+  </section>
 </body>
 
 </html>
