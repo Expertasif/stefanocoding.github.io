@@ -1,0 +1,15 @@
+<script>
+function getValue(param) {
+  var regex = new RegExp('[?&]'+param+'=([^&#]*)');
+  return regex.exec(location.search)[1];
+}
+var now = Date.now()
+var file = getValue('file');
+var asHtml = getValue('asHtml');
+var asObject = getValue('asObject') === 'true';
+if (asObject) {
+  document.write('<object data="XssImage.swf?' + now + '"><param name="allowscriptaccess" value="always"/><param name="flashvars" value="file=' + file + '&asHtml=' + asHtml + '"/></object>');
+} else {
+  document.write('<embed src="XssImage.swf?' + now + '" allowscriptaccess="always" flashvars="file=' + file + '&asHtml=' + asHtml + '"></embed>');
+}
+</script>
