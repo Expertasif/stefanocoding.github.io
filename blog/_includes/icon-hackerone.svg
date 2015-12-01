@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="39px" height="74px" viewBox="0 0 39 74" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.2 (15855) - http://www.bohemiancoding.com/sketch -->
+    <title>Untitled 3</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path id="path-1" d="M0.06,3.60329081 C0.212928399,2.89925466 0.657587482,2.30266801 1.387,1.823 C2.307,1.223 3.497,0.915 4.958,0.915 C6.357,0.915 7.547,1.223 8.535,1.823 C9.523,2.44 10.014,3.219 10.014,4.183 L10.014,70.051 C10.014,70.887 9.499,71.652 8.486,72.35 C7.467,73.056 6.295,73.407 4.958,73.407 C3.559,73.407 2.387,73.056 1.436,72.35 C0.673931664,71.7899832 0.215600576,71.1951631 0.06,70.5544658 L0.06,3.60329081 L0.06,3.60329081 Z"></path>
+        <path id="path-3" d="M0.787,9.392 C0.187,9.954 -0.071,10.807 0.04,11.974 C0.143,13.13 0.677,14.23 1.623,15.268 C2.573,16.313 3.635,16.968 4.85,17.246 C6.046,17.517 6.955,17.369 7.555,16.813 L12.857,13.506 L12.857,43.051 C12.857,43.887 13.317,44.646 14.249,45.35 C15.158,46.056 16.324,46.407 17.723,46.407 C19.122,46.407 20.33,46.056 21.343,45.35 C22.361,44.646 22.871,43.887 22.871,43.051 L22.871,3.329 C22.871,2.365 22.374,1.587 21.392,0.988 C20.41,0.376 19.189,0.079 17.723,0.079 C16.262,0.079 15.09,0.376 14.194,0.988 L0.787,9.392 L0.787,9.392 Z"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="HackerOne---short" sketch:type="MSLayerGroup">
+            <g id="Page-1">
+                <g id="Group-3">
+                    <mask id="mask-2" sketch:name="Clip 2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="Clip-2"></g>
+                    <path d="M0.06,0.8 L10.02,0.8 L10.02,73.52 L0.06,73.52 L0.06,0.8 Z" id="Fill-1" fill="#828282" sketch:type="MSShapeGroup" mask="url(#mask-2)"></path>
+                </g>
+                <g id="Group-6" transform="translate(16.000000, 27.000000)">
+                    <mask id="mask-4" sketch:name="Clip 5" fill="white">
+                        <use xlink:href="#path-3"></use>
+                    </mask>
+                    <g id="Clip-5"></g>
+                    <path d="M0.02,-0.04 L22.94,-0.04 L22.94,46.52 L0.02,46.52 L0.02,-0.04 Z" id="Fill-4" fill="#828282" sketch:type="MSShapeGroup" mask="url(#mask-4)"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

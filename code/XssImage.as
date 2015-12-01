@@ -14,11 +14,12 @@ package
         private var asHtml:Boolean = params.asHtml == 'true';
         private var myText:String = 'Example <img src="' + file + '">'; // I don't know why, but some text is necessary. This is the reason why I put "Example"
         private var imageLoader:Loader = new Loader();
-        private var imageUrl:URLRequest = new URLRequest(file + 'incluso');
+        private var imageUrl:URLRequest = new URLRequest(file);
 
         public function XssImage()
         {
           if (asHtml) {
+            myTextBox.selectable = false;
             myTextBox.htmlText = myText;
             addChild(myTextBox);
           } else {
