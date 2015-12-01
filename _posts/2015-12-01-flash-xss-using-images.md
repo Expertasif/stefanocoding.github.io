@@ -27,6 +27,6 @@ Sounds promising! Anyway, at first I thought that maybe Flash loaded the file in
 After successfully execute Javascript using an `<img>` tag, I went to check if it was possible to do the same but in cases where you can provide the URL of an image that is shown using Flash, and I confirmed that it is possible. What I mean is that if, for example, Vimeo allowed to put any URL as the thumbnail of the video, you could provide an URL to a Flash file of yours with Javascript code and it would probably load the file and execute the Javascript code.
 
 You can test the issue using the `<img>` tag [here](http://esevece.github.io/code/XssImage.html?file=https%3A%2f%2fgithub.com%2fesevece%2fesevece.github.io%2fblob%2fmaster%2fcode%2fxss.swf%3Fraw%3Dtrue&asHtml=true&asObject=false) and the issue when you can provide the URL of an image [here](http://esevece.github.io/code/XssImage.html?file=https%3A%2f%2fgithub.com%2fesevece%2fesevece.github.io%2fblob%2fmaster%2fcode%2fxss.swf%3Fraw%3Dtrue&asHtml=false&asObject=false).
-This code is available at <https://github.com/esevece/esevece.github.io/code/>.  
+This code is available at <https://github.com/esevece/esevece.github.io/tree/master/code>.  
 
 The report [is publicly disclosed on HackerOne](https://hackerone.com/reports/87577) thanks to Vimeo.
