@@ -10,7 +10,7 @@ title: Stefano
 # email: your-email@domain.com
 description: > # this means to ignore newlines until "baseurl:"
   I share my findings here. Unless the ones that I think are useful for someone just starting finding bugs.
-baseurl: "/blog/" # the subpath of your site, e.g. /blog
+baseurl: "/blog" # the subpath of your site, e.g. /blog
 url: "http://esevece.github.com" # the base hostname & protocol for your site
 twitter_username: esevece
 hackerone_username: esevece
