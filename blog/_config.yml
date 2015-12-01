@@ -18,3 +18,4 @@ hackerone_username: esevece
 
 # Build settings
 markdown: kramdown
+future: true
