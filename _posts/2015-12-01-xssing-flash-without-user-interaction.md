@@ -6,14 +6,25 @@ _Just to clarify: the point of this post is to understand why is better to not u
 
 Looking for bugs on [Vimeo](https://hackerone.com/vimeo) I found out that they embed the Flash file <https://f.vimeocdn.com/p/flash/hubnut/2.0.12/hubnut.swf> with `allowscriptaccess` set to `always` at this endpoint <https://vimeo.com/hubnut/user/user36690798>. This Flash file is used to show the videos uploaded by the user indicated (_user36690798_ in this case).
 
+{% highlight html %}
+<!-- code that embeds Flash file -->
+<object width="100%" height="100%">
+...
+<param name="allowscriptaccess" value="always" />
+...
+<param name="movie" value="https://f.vimeocdn.com/p/flash/hubnut/2.0.12/hubnut.swf?v=1.0.0" />
+<embed src="https://f.vimeocdn.com/p/flash/hubnut/2.0.12/hubnut.swf?..." type="application/x-shockwave-flash" ... allowscriptaccess="always" ...></embed>
+</object>
+{% endhighlight %}
+
 If you [look at the source of the endpoint](view-source:https://vimeo.com/hubnut/user/user36690798) you notice that there is a `var config` which contains information about the user, including the name (which appears as the value of `display_name`). This variable is loaded by the Flash file who puts the value of `display_name` in a `TextField()` using the setter `.text` and, because they apply a style sheet to the `TextField()`, the content [is interpreted as HTML](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#text) like using `.htmlText`.
 
-An extract of the code of the class _Carousel_ from the file _hubnut.swf_:
 {% highlight js %}
+// An extract of the code of the class _Carousel_ from the file _hubnut.swf_
 ...
 this.selectedLabel.styleSheet = _loc2_;
 ...
-// Here "display_name" appears as "_loc4_.owner.display_name"
+// here "display_name" appears as "_loc4_.owner.display_name"
 _loc13_ = _loc13_ + (_loc4_.owner.url?"<h2>by <a href=\"//" + this.data.request.vimeo_url + "/" + _loc4_.owner.url_name + "\" target=\"_blank\">" + _loc4_.owner.display_name + "</a></h2>":"<h2>by <strong>" + _loc4_.owner.display_name + "</strong></h2>");
 ...
 this.selectedLabel.text = _loc13_;
