@@ -2,7 +2,7 @@
 layout: post
 title: "XSSing Flash without user interaction"
 ---
-_Just to clarify: the point of this post is to understand why is better to not use "allowscriptaccess" set to "always" when embedding a Flash file in a document, and it's not about XSSing Flash loading a file directly in the browser because in that case the third party files are sandboxed._
+_Just to clarify: the point of this post is to understand why is better to not use `allowscriptaccess` set to `always` when embedding a Flash file in a document, and it's not about XSSing Flash loading a file directly in the browser because in that case the third party files are sandboxed._
 
 Looking for bugs on [Vimeo](https://hackerone.com/vimeo) I found out that they embed the Flash file <https://f.vimeocdn.com/p/flash/hubnut/2.0.12/hubnut.swf> with `allowscriptaccess` set to `always` at this endpoint <https://vimeo.com/hubnut/user/user36690798>. This Flash file is used to show the videos uploaded by the user indicated (_user36690798_ in this case).
 
