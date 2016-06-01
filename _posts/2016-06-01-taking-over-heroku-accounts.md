@@ -5,7 +5,7 @@ title: "Taking over Heroku accounts"
 
 _This is the first time I'm proud of a vulnerability I find._
 
-> This issue has been fixed by Heroku.
+> Prior to publishing this blog post, the team at Heroku fixed the vulnerability on 5/26, and it is no longer exploitable.
 
 Context
 ======
