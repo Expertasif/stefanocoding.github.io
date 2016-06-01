@@ -1,1 +1,9 @@
-<a target="_blank" href="https://twitter.com/{{ include.username }}"><span class="icon icon--twitter">{% include icon-twitter.svg %}</span><span class="username">Twitter</span></a>
+<a target="_blank" href="https://twitter.com/{{ include.username }}">
+  <span class="icon icon--twitter">
+    {% comment %}
+    {% include icon-twitter.svg %}
+    {% endcomment %}
+    <img src="https://twitter.com/favicon.ico">
+  </span>
+  <span class="username">Twitter</span>
+</a>

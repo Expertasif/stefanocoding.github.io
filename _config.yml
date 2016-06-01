@@ -14,7 +14,11 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://esevece.github.io" # the base hostname & protocol for your site
 twitter_username: esevece
 hackerone_username: esevece
+bugcrowd_username: esevece
 # github_username:  jekyll
 
 # Build settings
 markdown: kramdown
+
+gems:
+  - jemoji
