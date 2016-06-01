@@ -5,6 +5,8 @@ title: "Taking over Heroku accounts"
 
 _This is the first time I'm proud of a vulnerability I find._
 
+> This issue has been fixed by Heroku.
+
 Context
 ======
 <a href="https://www.heroku.com/" target="_blank">Heroku</a> has a feature called <a href="https://elements.heroku.com/buttons" target="_blank">Buttons</a>, which "let you one-click provision, configure and deploy third party components, libraries and pattern apps".
