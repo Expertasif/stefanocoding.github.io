@@ -12,9 +12,9 @@ description: > # this means to ignore newlines until "baseurl:"
   I share my findings here. At least the ones that I think are useful for someone just starting finding bugs.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://esevece.github.io" # the base hostname & protocol for your site
-twitter_username: esevece
-hackerone_username: esevece
-bugcrowd_username: esevece
+twitter_username: stefanofindsbug
+hackerone_username: stefanofindsbugs
+bugcrowd_username: stefanofindsbugs
 # github_username:  jekyll
 
 # Build settings
