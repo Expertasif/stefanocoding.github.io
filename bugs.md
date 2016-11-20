@@ -1,10 +1,15 @@
 ---
-layout: default
+layout: page
+title: Bugs
+permalink: /bugs/
 ---
 
-<div class="home">
+<!-- <div class="home">
 
-  <h1 class="page-heading">Posts</h1>
+  <h1 class="page-heading">Bugs</h1> -->
+  <p>
+  I write about the bugs I find and I think are useful for someone just starting out finding bugs.
+  </p>
 
   <ul class="post-list">
     {% for post in site.posts %}
@@ -21,4 +26,4 @@ layout: default
 
   <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
 
-</div>
+<!-- </div> -->

