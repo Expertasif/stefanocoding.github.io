@@ -5,7 +5,7 @@ permalink: /bugs/
 ---
 
   <p>
-  I write about the bugs I find and I think are useful for someone just starting out finding bugs.
+  I write about the bugs I find and I think are useful for someone just starting out with bug bounty programs.
   </p>
 
   <ul class="post-list">
