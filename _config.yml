@@ -12,7 +12,7 @@ description: > # this means to ignore newlines until "baseurl:"
   Bugs and Music
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://stefano.soy" # the base hostname & protocol for your site
-twitter_username: i_am_stefano
+twitter_username: stefano_soy
 hackerone_username: stefanofindsbugs
 bugcrowd_username: stefanofindsbugs
 soundcloud_username: stefanohaciendocanciones
