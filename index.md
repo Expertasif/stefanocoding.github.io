@@ -8,7 +8,7 @@ layout: default
   <img src='/images/bugs.jpg' style='display:block'>
 </a>
 <a href='/music/' style='display:inline-block; width: 45%'>
-  <img src='/images/music.jpg' style='display:block'>
+  <img src='/images/musica.jpg' style='display:block'>
 </a>
 
 </div>
