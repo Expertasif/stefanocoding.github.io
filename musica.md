@@ -5,6 +5,7 @@ permalink: /musica/
 ---
 
 <p>
+Hago canciones en casa que disfruto escuchar. Espero que alguna te guste o te haga sentir algo (bueno en lo posible :D), ¡avisame si así es!
 También podés encontrar mi música en Spotify: <a href="{{site.spotify_url}}">{{site.spotify_url}}</a>
 </p>
 
